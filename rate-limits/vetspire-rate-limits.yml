@@ -1,0 +1,63 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Vetspire
+providerId: vetspire
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Veterinary
+- Practice Management
+- GraphQL
+- Rate Limiting
+- Quotas
+description: >-
+  Vetspire's public GraphQL API at https://api.vetspire.com/graphql is
+  authenticated with an Authorization API token and protected primarily by a
+  documented maximum query depth of 8 - queries deeper than 8 levels are
+  rejected with error code query_depth_limit. Vetspire does not publish
+  numeric request-per-minute or per-day rate limits in its public API
+  documentation; consumers should assume server-side throttling exists and
+  design for backoff. Specific throughput quotas are not documented and are
+  not reconciled in this artifact.
+notes: >-
+  The only hard, documented API constraint is the max query depth of 8.
+  Any request-rate throttling is not publicly quantified - confirm limits with
+  Vetspire support during reconciliation.
+sources:
+- https://developer.vetspire.com/
+- https://support.vetspire.com/support/solutions/articles/70000636887-vetspire-s-api-overview
+- https://support.vetspire.com/support/solutions/articles/70000670311-graphql-vetspire
+responseCodes:
+  throttled: 429
+limits:
+- name: Maximum Query Depth
+  scope: request
+  metric: query_depth
+  limit: 8
+  notes: >-
+    Documented hard limit. Queries with depth greater than 8 fail with error
+    code query_depth_limit ("Query has depth of 9, which exceeds max depth of 8").
+- name: Request Rate
+  scope: token
+  metric: requests
+  limit: see provider documentation
+  notes: >-
+    Vetspire does not publish a numeric request-per-minute/day limit. Assume
+    server-side throttling; implement retries with backoff on 429.
+policies:
+- name: Query Depth Enforcement
+  description: >-
+    Keep GraphQL queries within 8 levels of nesting; split deep traversals into
+    multiple shallower queries.
+- name: Backoff Strategy
+  description: >-
+    On HTTP 429 or transient errors, retry with exponential backoff and jitter.
+- name: Token Scoping
+  description: >-
+    API tokens are provisioned per practice by an administrator; treat as
+    sensitive and rotate as needed.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

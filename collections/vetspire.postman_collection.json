@@ -1,0 +1,294 @@
+{
+  "info": {
+    "name": "Vetspire GraphQL API",
+    "description": "GraphQL operations for the Vetspire veterinary practice management platform. All requests are HTTP POST to the single endpoint https://api.vetspire.com/graphql with an Authorization API token header. Queries are grouped by documented domain (Accounts/Clients, Patients, Schedule, Encounters, Billing, Inventory, Hospital/Locations, Reminders, Lab, Conversations, Analytics, Events). Query bodies are representative and grounded in developer.vetspire.com; confirm exact fields via live introspection. Maximum query depth is 8.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.vetspire.com/graphql"
+    },
+    {
+      "key": "apiToken",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "Authorization", "type": "string" },
+      { "key": "value", "value": "{{apiToken}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Accounts & Clients",
+      "item": [
+        {
+          "name": "Search Clients",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query SearchClients($searchTerm: String!) {\n  clients(searchTerm: $searchTerm) {\n    id\n    givenName\n    familyName\n    email\n    phoneNumber\n    balance\n    patients { id name species }\n  }\n}",
+                "variables": "{\n  \"searchTerm\": \"Smith\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": ["{{baseUrl}}"]
+            },
+            "description": "Search and list clients (pet owners) in the Accounts domain."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Get Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetPatient($id: ID!) {\n  patient(id: $id) {\n    id\n    name\n    species\n    breed\n    sex\n    status\n    birthDate\n    client { id givenName familyName }\n  }\n}",
+                "variables": "{\n  \"id\": \"1\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "Retrieve a patient (animal) by ID from the Clinical domain."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Schedule & Appointments",
+      "item": [
+        {
+          "name": "List Appointments for Location",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query LocationAppointments($locationId: ID!, $start: DateTime!, $end: DateTime!) {\n  appointments(locationId: $locationId, start: $start, end: $end) {\n    id\n    start\n    end\n    type\n    status\n    patient { id name }\n    provider { id name }\n  }\n}",
+                "variables": "{\n  \"locationId\": \"1\",\n  \"start\": \"2026-07-04T00:00:00Z\",\n  \"end\": \"2026-07-05T00:00:00Z\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List appointments for a location and date range (Schedule domain)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Encounters",
+      "item": [
+        {
+          "name": "List Encounters for Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query PatientEncounters($patientId: ID!) {\n  encounters(patientId: $patientId) {\n    id\n    status\n    date\n    assessment\n    plan\n    provider { id name }\n  }\n}",
+                "variables": "{\n  \"patientId\": \"1\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List clinical encounters (visits) for a patient."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Billing & Invoices",
+      "item": [
+        {
+          "name": "List Invoices",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query ClientInvoices($clientId: ID!) {\n  invoices(clientId: $clientId) {\n    id\n    number\n    status\n    total\n    balance\n    lineItems { description quantity unitPrice total }\n  }\n}",
+                "variables": "{\n  \"clientId\": \"1\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List invoices for a client (Billing / New Billing domains)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory & Products",
+      "item": [
+        {
+          "name": "Search Products",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query SearchProducts($searchTerm: String!) {\n  products(searchTerm: $searchTerm) {\n    id\n    name\n    code\n    price\n    quantityOnHand\n  }\n}",
+                "variables": "{\n  \"searchTerm\": \"vaccine\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "Search products in the Inventory domain."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hospital & Locations",
+      "item": [
+        {
+          "name": "List Locations",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Locations {\n  locations {\n    id\n    name\n    timezone\n    providers { id name }\n  }\n}",
+                "variables": "{}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List locations and their providers (Hospital domain)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reminders",
+      "item": [
+        {
+          "name": "List Reminders for Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query PatientReminders($patientId: ID!) {\n  reminders(patientId: $patientId) {\n    id\n    name\n    status\n    dueDate\n  }\n}",
+                "variables": "{\n  \"patientId\": \"1\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List due/overdue reminders for a patient (Reminders domain)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lab & Diagnostics",
+      "item": [
+        {
+          "name": "List Lab Orders for Patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query PatientLabOrders($patientId: ID!) {\n  labOrders(patientId: $patientId) {\n    id\n    status\n    name\n    results { analyte value unit referenceRange flag }\n  }\n}",
+                "variables": "{\n  \"patientId\": \"1\"\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "List lab orders and results for a patient (Lab domain)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conversations",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation SendMessage($input: MessageInput!) {\n  sendMessage(input: $input) {\n    id\n    channel\n    body\n    sentAt\n  }\n}",
+                "variables": "{\n  \"input\": {\n    \"clientId\": \"1\",\n    \"channel\": \"SMS\",\n    \"body\": \"Your pet's appointment is tomorrow.\"\n  }\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "Send a message to a client (Conversations / Marketing domains)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "List Events",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{apiToken}}" }
+            ],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Events($filter: EventFilter) {\n  events(filter: $filter) {\n    id\n    action\n    entityType\n    entityId\n    occurredAt\n  }\n}",
+                "variables": "{\n  \"filter\": {\n    \"since\": \"2026-07-01T00:00:00Z\"\n  }\n}"
+              }
+            },
+            "url": { "raw": "{{baseUrl}}", "host": ["{{baseUrl}}"] },
+            "description": "Query the platform event log (Events domain) for auditing and sync."
+          }
+        }
+      ]
+    }
+  ]
+}

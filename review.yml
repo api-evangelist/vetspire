@@ -1,0 +1,112 @@
+aid: vetspire
+name: Vetspire
+review:
+  question: Does Vetspire expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-04'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Vetspire's entire public API surface is a
+    single request/response GraphQL endpoint over HTTPS
+    (https://api.vetspire.com/graphql). There is no documented server-push
+    transport - no GraphQL subscriptions, no WebSocket, and no Server-Sent
+    Events - on Vetspire's public API to model. Near-real-time integration is
+    done by polling the Events domain (a queryable change/event log), not by a
+    streaming transport.
+findings:
+  summary: |
+    Vetspire does not publish a documented public WebSocket API. Vetspire is a
+    cloud veterinary practice management (PIMS) platform whose public API is
+    GraphQL - "every action within Vetspire is powered by GraphQL requests." All
+    operations are HTTP POST to the single endpoint https://api.vetspire.com/graphql
+    (staging at https://api.staging.vetspire.com/graphql, sandbox at
+    https://api.sandbox.vetspire.com/graphql), authenticated with an API token in
+    the Authorization header. The documented hard constraint is a maximum query
+    depth of 8. The schema spans 24 query domains and 26 mutation domains with
+    400+ object types, 248 input objects, and 112 enums. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint and no
+    GraphQL subscription operation is documented on Vetspire's developer or
+    support sites as of the review date.
+  apiStyle: |
+    Single-endpoint GraphQL (query + mutation). Exploration is supported via a
+    Hasura Cloud explorer and a GraphQL Chrome network inspector, plus an API
+    Query Library of common queries. The public GraphQL schema is fully
+    introspectable only with a valid API token; a representative modeled SDL is
+    provided in this repo at graphql/vetspire-schema.graphql.
+  transports:
+    - protocol: GraphQL
+      scheme: https
+      baseURL: https://api.vetspire.com/graphql
+      documented: true
+      note: >-
+        Single GraphQL endpoint for all queries and mutations. HTTP POST with
+        an Authorization API token header. Max query depth 8.
+    - protocol: GraphQL Subscriptions
+      scheme: wss
+      documented: false
+      note: >-
+        No GraphQL subscription root or WebSocket transport is documented for
+        the public API.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: >-
+        No WebSocket endpoint is documented anywhere in Vetspire's developer or
+        support documentation as of the review date.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming surface is documented.
+  endpointsConfirmed:
+    - POST https://api.vetspire.com/graphql
+    - POST https://api.staging.vetspire.com/graphql
+    - POST https://api.sandbox.vetspire.com/graphql
+  operationsModeled:
+    - Query.clients / Query.client (Accounts domain)
+    - Query.patients / Query.patient (Clinical domain)
+    - Query.appointments / Query.providerSchedules (Schedule domain)
+    - Query.encounters / Query.encounter (Clinical / Treatment domains)
+    - Query.invoices / Query.invoice (Billing / New Billing domains)
+    - Query.products / Query.product (Inventory domain)
+    - Query.locations / Query.providers (Hospital domain)
+    - Query.reminders (Reminders domain)
+    - Query.labOrders (Lab domain)
+    - Query.conversations (Conversations / Marketing domains)
+    - Query.analytics (Analytics domain)
+    - Query.events (Events domain)
+    - Mutation.createClient / updateClient, createPatient / updatePatient
+    - Mutation.createAppointment / updateAppointment / cancelAppointment
+    - Mutation.createEncounter / updateEncounter
+    - Mutation.createInvoice / createPayment
+    - Mutation.createProduct / updateProduct, sendMessage
+  modeledNote: |
+    Operation and field names in graphql/vetspire-schema.graphql are a
+    representative model grounded in the documented domains at
+    developer.vetspire.com and the API Query Library. Exact names and the full
+    400+ type surface must be confirmed via authenticated introspection.
+sources:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+    note: Interactive GraphQL schema reference; lists 24 query and 26 mutation domains, endpoints, Authorization token, and max depth 8.
+  - url: https://support.vetspire.com/support/solutions/articles/70000636887-vetspire-s-api-overview
+    type: Documentation
+    note: API overview - GraphQL endpoint https://api.vetspire.com/graphql, API token in Authorization header.
+  - url: https://support.vetspire.com/support/solutions/articles/70000670311-graphql-vetspire
+    type: Documentation
+    note: GraphQL concepts and Vetspire GraphQL usage; every action is a GraphQL request. No subscriptions/WebSocket mentioned.
+  - url: https://support.vetspire.com/support/solutions/articles/70000672851-vetspire-api-query-library
+    type: APIReference
+    note: API Query Library of common queries (Searching Accounts, Appointments for a Location, Provider Schedules, API Events).
+  - url: https://support.vetspire.com/support/solutions/articles/70000669182-accessing-and-using-hasura-cloud-for-vetspire-graphql-exploration
+    type: Documentation
+    note: Exploration via Hasura Cloud; request/response GraphQL, no streaming transport.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or other server-push protocol surface exists on Vetspire's
+    public API. The entire API is request/response GraphQL over HTTPS, so no
+    AsyncAPI document was created. The apis.yml catalogs the GraphQL API as
+    logical operation-group entries by domain, each pointing at the GraphQL
+    markdown and modeled SDL.

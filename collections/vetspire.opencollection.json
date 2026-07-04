@@ -1,0 +1,241 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vetspire GraphQL API",
+    "version": "1.0",
+    "description": "GraphQL operations for the Vetspire veterinary practice management platform. All requests are HTTP POST to https://api.vetspire.com/graphql with an Authorization API token. Grouped by documented domain. Representative queries grounded in developer.vetspire.com; confirm exact fields via live introspection. Max query depth is 8."
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "key": "Authorization",
+        "value": "{{apiToken}}",
+        "in": "header"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Accounts & Clients", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search Clients", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query SearchClients($searchTerm: String!) { clients(searchTerm: $searchTerm) { id givenName familyName email phoneNumber balance patients { id name species } } }",
+                "variables": { "searchTerm": "Smith" }
+              }
+            }
+          },
+          "docs": "Search and list clients (pet owners) in the Accounts domain."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Patients", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get Patient", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query GetPatient($id: ID!) { patient(id: $id) { id name species breed sex status birthDate client { id givenName familyName } } }",
+                "variables": { "id": "1" }
+              }
+            }
+          },
+          "docs": "Retrieve a patient (animal) by ID from the Clinical domain."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Schedule & Appointments", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Appointments for Location", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query LocationAppointments($locationId: ID!, $start: DateTime!, $end: DateTime!) { appointments(locationId: $locationId, start: $start, end: $end) { id start end type status patient { id name } provider { id name } } }",
+                "variables": { "locationId": "1", "start": "2026-07-04T00:00:00Z", "end": "2026-07-05T00:00:00Z" }
+              }
+            }
+          },
+          "docs": "List appointments for a location and date range (Schedule domain)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Encounters", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Encounters for Patient", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query PatientEncounters($patientId: ID!) { encounters(patientId: $patientId) { id status date assessment plan provider { id name } } }",
+                "variables": { "patientId": "1" }
+              }
+            }
+          },
+          "docs": "List clinical encounters (visits) for a patient."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Billing & Invoices", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Invoices", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query ClientInvoices($clientId: ID!) { invoices(clientId: $clientId) { id number status total balance lineItems { description quantity unitPrice total } } }",
+                "variables": { "clientId": "1" }
+              }
+            }
+          },
+          "docs": "List invoices for a client (Billing / New Billing domains)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Inventory & Products", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Search Products", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query SearchProducts($searchTerm: String!) { products(searchTerm: $searchTerm) { id name code price quantityOnHand } }",
+                "variables": { "searchTerm": "vaccine" }
+              }
+            }
+          },
+          "docs": "Search products in the Inventory domain."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Hospital & Locations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Locations", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query Locations { locations { id name timezone providers { id name } } }",
+                "variables": {}
+              }
+            }
+          },
+          "docs": "List locations and their providers (Hospital domain)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Reminders", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Reminders for Patient", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query PatientReminders($patientId: ID!) { reminders(patientId: $patientId) { id name status dueDate } }",
+                "variables": { "patientId": "1" }
+              }
+            }
+          },
+          "docs": "List due/overdue reminders for a patient (Reminders domain)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Lab & Diagnostics", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Lab Orders for Patient", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query PatientLabOrders($patientId: ID!) { labOrders(patientId: $patientId) { id status name results { analyte value unit referenceRange flag } } }",
+                "variables": { "patientId": "1" }
+              }
+            }
+          },
+          "docs": "List lab orders and results for a patient (Lab domain)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Conversations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Send Message", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "mutation SendMessage($input: MessageInput!) { sendMessage(input: $input) { id channel body sentAt } }",
+                "variables": { "input": { "clientId": "1", "channel": "SMS", "body": "Your pet's appointment is tomorrow." } }
+              }
+            }
+          },
+          "docs": "Send a message to a client (Conversations / Marketing domains)."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Events", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List Events", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vetspire.com/graphql",
+            "body": {
+              "type": "graphql",
+              "data": {
+                "query": "query Events($filter: EventFilter) { events(filter: $filter) { id action entityType entityId occurredAt } }",
+                "variables": { "filter": { "since": "2026-07-01T00:00:00Z" } }
+              }
+            }
+          },
+          "docs": "Query the platform event log (Events domain) for auditing and sync."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

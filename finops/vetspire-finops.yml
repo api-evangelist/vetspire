@@ -1,0 +1,92 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Vetspire
+providerId: vetspire
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Veterinary
+- Practice Management
+- PIMS
+- GraphQL
+- FinOps
+- Cost Management
+description: >-
+  FinOps view of Vetspire spend. Vetspire is a per-practice SaaS billed as a
+  recurring subscription priced per full-time veterinarian (DVM) per month
+  (Standard / Pro tiers, with Enterprise volume pricing). The GraphQL API is
+  bundled with the subscription and is not separately metered - there are no
+  per-call, per-token, or per-record API charges. The primary cost drivers are
+  the number of DVM seats and the chosen tier, plus one-time data-migration
+  fees at onboarding.
+notes: >-
+  Because the API is not usage-metered, FinOps focus is on seat/tier
+  optimization rather than call volume. Verify per-DVM rates and any add-on
+  module fees with Vetspire sales during reconciliation.
+sources:
+- https://vetspire.com/pricing
+- https://www.vetsoftwarehub.com/product/vetspire/pricing
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Vetspire
+serviceCategory: Veterinary Practice Management Software
+billingModel:
+  pricingCategory: Subscription
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Usage
+meters:
+- name: dvm_seats
+  description: >-
+    Number of full-time veterinarians (DVMs) on the practice's plan; the
+    primary recurring billing unit.
+  unit: seats
+  aggregation: max
+  dimensions:
+  - practice
+  - location
+  - tier
+- name: subscription_tier
+  description: >-
+    Selected plan (Standard, Pro, Enterprise) which sets the per-DVM rate.
+  unit: tier
+  aggregation: none
+  dimensions:
+  - practice
+- name: data_migration
+  description: >-
+    One-time data-migration package fee at onboarding (low to high touch).
+  unit: package
+  aggregation: sum
+  dimensions:
+  - practice
+principles:
+- name: Visibility
+  description: >-
+    Track active DVM seats and tier per location; the API itself adds no
+    metered spend, so reconcile against the monthly per-DVM subscription invoice.
+- name: Allocation
+  description: >-
+    Allocate subscription cost by location and DVM seat to internal cost centers
+    in multi-location groups.
+- name: Optimization
+  description: >-
+    Right-size the number of billed DVM seats and evaluate Standard vs Pro vs
+    Enterprise volume pricing as the practice scales; consolidate on Vetspire to
+    retire third-party point tools.
+- name: Accountability
+  description: >-
+    Review seat counts and tier at renewal; assign an owner for the Vetspire
+    subscription and API token governance.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

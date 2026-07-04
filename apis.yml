@@ -1,0 +1,293 @@
+aid: vetspire
+url: https://raw.githubusercontent.com/api-evangelist/vetspire/refs/heads/main/apis.yml
+name: Vetspire
+kind: company
+description: Vetspire is a cloud-based, AI-enabled veterinary practice management (PIMS)
+  platform for animal hospitals and clinics, covering electronic medical records,
+  scheduling, client communications, billing, inventory, labs, and reminders. Vetspire
+  exposes a single public GraphQL API at https://api.vetspire.com/graphql - every
+  action in the product is powered by GraphQL - authenticated with an Authorization
+  API token and organized by veterinary practice domains (Accounts, Clinical,
+  Schedule, Billing, Inventory, Hospital, Lab, Reminders, Conversations, Analytics,
+  Events). The schema exposes 400+ object types, 248 input objects, and 112 enums,
+  with a maximum query depth of 8.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Veterinary
+- Practice Management
+- PIMS
+- Healthcare
+- GraphQL
+- Electronic Medical Records
+- Scheduling
+created: '2026-07-04'
+modified: '2026-07-04'
+specificationVersion: '0.19'
+apis:
+- aid: vetspire:vetspire-accounts-clients-api
+  name: Vetspire Accounts & Clients API
+  tags:
+  - Clients
+  - Accounts
+  - Owners
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: https://support.vetspire.com/support/solutions/articles/70000673750-api-query-library-searching-accounts-via-vetspire-api-graphql-
+    type: APIReference
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Accounts domain - search and read client
+    (pet owner) records including contact details, addresses, balances, linked
+    patients, and communication preferences, and create or update client accounts.
+- aid: vetspire:vetspire-patients-api
+  name: Vetspire Patients API
+  tags:
+  - Patients
+  - Animals
+  - Clinical
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Clinical domain patient records - species,
+    breed, sex, weight history, microchip, alerts, and the owning client - plus
+    mutations to register and update patients (animals).
+- aid: vetspire:vetspire-schedule-appointments-api
+  name: Vetspire Schedule & Appointments API
+  tags:
+  - Appointments
+  - Scheduling
+  - Calendar
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: https://support.vetspire.com/support/solutions/articles/70000636887-vetspire-s-api-overview
+    type: APIReference
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Schedule domain - list appointments for a
+    location and date range, read provider schedules by location, and create,
+    reschedule, or cancel appointments and appointment types.
+- aid: vetspire:vetspire-encounters-clinical-api
+  name: Vetspire Encounters & Clinical Records API
+  tags:
+  - Encounters
+  - Medical Records
+  - Treatment
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Clinical and Treatment domains - encounters
+    (visits/SOAP notes), treatment sheets, immunizations, prescriptions, and
+    clinical history for a patient, with mutations to create and amend encounter
+    records.
+- aid: vetspire:vetspire-billing-invoices-api
+  name: Vetspire Billing & Invoices API
+  tags:
+  - Billing
+  - Invoices
+  - Payments
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Billing and New Billing domains - invoices,
+    line items, orders, payments, and accounts-receivable balances, with mutations
+    to create invoices, apply charges, and record payments.
+- aid: vetspire:vetspire-inventory-products-api
+  name: Vetspire Inventory & Products API
+  tags:
+  - Inventory
+  - Products
+  - Catalog
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Inventory domain - products and the product
+    catalog, pricing, stock levels, stock transfers, and vendors, with mutations to
+    manage products and adjust inventory.
+- aid: vetspire:vetspire-hospital-locations-api
+  name: Vetspire Hospital & Locations API
+  tags:
+  - Locations
+  - Hospital
+  - Organizations
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Hospital domain - organization and location
+    records, providers (staff/DVMs), rooms, and operating hours used to scope
+    scheduling, billing, and reporting across a multi-location practice.
+- aid: vetspire:vetspire-lab-diagnostics-api
+  name: Vetspire Lab & Diagnostics API
+  tags:
+  - Lab
+  - Diagnostics
+  - Results
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Lab domain - diagnostic lab orders and
+    results linked to encounters and patients, including reference ranges and
+    result status, with mutations to create and update lab orders.
+- aid: vetspire:vetspire-reminders-api
+  name: Vetspire Reminders API
+  tags:
+  - Reminders
+  - Compliance
+  - Recall
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Reminders domain - due and overdue service
+    reminders (vaccinations, wellness, recalls) per patient and client, used to
+    drive compliance reporting and client outreach.
+- aid: vetspire:vetspire-conversations-api
+  name: Vetspire Conversations & Communications API
+  tags:
+  - Conversations
+  - Messaging
+  - Marketing
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Conversations and Marketing domains -
+    client messaging threads (SMS/email), templates, and campaigns, with mutations
+    to send messages and manage conversation state.
+- aid: vetspire:vetspire-analytics-api
+  name: Vetspire Analytics & Reporting API
+  tags:
+  - Analytics
+  - Reporting
+  - Metrics
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Analytics domain - aggregate practice
+    metrics and reporting datasets (production, revenue, appointments, compliance)
+    used for dashboards and data warehousing.
+- aid: vetspire:vetspire-events-api
+  name: Vetspire Events API
+  tags:
+  - Events
+  - Audit
+  - Change Log
+  - GraphQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developer.vetspire.com/
+  baseURL: https://api.vetspire.com/graphql
+  properties:
+  - url: https://developer.vetspire.com/
+    type: Documentation
+  - url: https://support.vetspire.com/support/solutions/articles/70000639458-api-query-library-list-of-events
+    type: APIReference
+  - url: graphql/vetspire-graphql.md
+    type: GraphQL
+  - url: graphql/vetspire-schema.graphql
+    type: GraphQL
+  description: GraphQL operations over the Events domain - a queryable log of platform
+    events (record created, updated, deleted, and workflow triggers) for auditing,
+    synchronization, and integration polling.
+common:
+- type: GitHubOrganization
+  url: https://github.com/vetspire
+- type: LinkedIn
+  url: https://www.linkedin.com/company/vetspire
+- type: Website
+  url: https://vetspire.com/
+- type: Documentation
+  url: https://developer.vetspire.com/
+- type: Plans
+  url: plans/vetspire-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/vetspire-rate-limits.yml
+- type: FinOps
+  url: finops/vetspire-finops.yml
+- type: Support
+  url: https://support.vetspire.com/support/solutions/folders/70000486207
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

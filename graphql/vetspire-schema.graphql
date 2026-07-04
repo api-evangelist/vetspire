@@ -1,0 +1,563 @@
+"""
+Vetspire GraphQL Schema (representative / modeled)
+
+Vetspire exposes a single public GraphQL API at https://api.vetspire.com/graphql.
+Every action in the Vetspire veterinary practice management platform is powered by
+GraphQL. This SDL is a MODELED representation grounded in the documented domains at
+https://developer.vetspire.com/ (Accounts, Clinical, Schedule, Billing, Inventory,
+Hospital, Lab, Reminders, Conversations, Analytics, Events). The live production
+schema (400+ object types, 248 input objects, 112 enums, 5 unions) is only fully
+introspectable with a valid API token; confirm exact fields against the developer
+reference and live introspection. Maximum query depth is 8.
+"""
+
+# ─────────────────────────────────────────────
+# Scalars
+# ─────────────────────────────────────────────
+
+scalar DateTime
+scalar Date
+scalar Decimal
+scalar JSON
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum Sex {
+  MALE
+  FEMALE
+  MALE_NEUTERED
+  FEMALE_SPAYED
+  UNKNOWN
+}
+
+enum PatientStatus {
+  ACTIVE
+  INACTIVE
+  DECEASED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum EncounterStatus {
+  OPEN
+  FINALIZED
+  AMENDED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  PARTIALLY_PAID
+  VOID
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  CHECK
+  ONLINE
+  CREDIT
+  OTHER
+}
+
+enum ReminderStatus {
+  DUE
+  OVERDUE
+  UPCOMING
+  COMPLETED
+  DISMISSED
+}
+
+enum LabOrderStatus {
+  ORDERED
+  PENDING
+  IN_PROGRESS
+  RESULTED
+  REVIEWED
+  CANCELLED
+}
+
+enum ConversationChannel {
+  SMS
+  EMAIL
+  APP
+  VOICE
+}
+
+enum EventAction {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+# ─────────────────────────────────────────────
+# Core Entity Types
+# ─────────────────────────────────────────────
+
+type Client {
+  id: ID!
+  givenName: String
+  familyName: String
+  email: String
+  phoneNumber: String
+  secondaryPhoneNumber: String
+  address: Address
+  balance: Decimal
+  active: Boolean!
+  stripeCustomerId: String
+  preferredContactMethod: ConversationChannel
+  patients: [Patient!]!
+  location: Location
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type Address {
+  line1: String
+  line2: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
+type Patient {
+  id: ID!
+  name: String!
+  species: String
+  breed: String
+  color: String
+  sex: Sex
+  status: PatientStatus!
+  birthDate: Date
+  microchipNumber: String
+  neutered: Boolean
+  deceased: Boolean
+  weights: [Weight!]!
+  alerts: [String!]
+  client: Client
+  reminders: [Reminder!]!
+  encounters: [Encounter!]!
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type Weight {
+  id: ID!
+  value: Decimal!
+  unit: String!
+  recordedAt: DateTime!
+}
+
+type Provider {
+  id: ID!
+  name: String!
+  email: String
+  title: String
+  npiNumber: String
+  active: Boolean!
+  location: Location
+}
+
+type Location {
+  id: ID!
+  name: String!
+  organizationId: ID
+  address: Address
+  phoneNumber: String
+  timezone: String
+  active: Boolean!
+  rooms: [Room!]!
+  providers: [Provider!]!
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  locations: [Location!]!
+}
+
+type Room {
+  id: ID!
+  name: String!
+  location: Location
+}
+
+type Appointment {
+  id: ID!
+  start: DateTime!
+  end: DateTime
+  type: String
+  status: AppointmentStatus!
+  reason: String
+  notes: String
+  patient: Patient
+  client: Client
+  provider: Provider
+  location: Location
+  room: Room
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type Encounter {
+  id: ID!
+  status: EncounterStatus!
+  date: DateTime!
+  subjective: String
+  objective: String
+  assessment: String
+  plan: String
+  patient: Patient
+  provider: Provider
+  location: Location
+  immunizations: [Immunization!]!
+  prescriptions: [Prescription!]!
+  labOrders: [LabOrder!]!
+  invoice: Invoice
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type Immunization {
+  id: ID!
+  name: String!
+  administeredAt: DateTime
+  expiresAt: Date
+  lotNumber: String
+  provider: Provider
+}
+
+type Prescription {
+  id: ID!
+  product: Product
+  instructions: String
+  quantity: Decimal
+  refills: Int
+  prescribedAt: DateTime
+  provider: Provider
+}
+
+type Product {
+  id: ID!
+  name: String!
+  code: String
+  category: String
+  price: Decimal
+  cost: Decimal
+  taxable: Boolean
+  quantityOnHand: Decimal
+  vendor: String
+  active: Boolean!
+}
+
+type Invoice {
+  id: ID!
+  number: String
+  status: InvoiceStatus!
+  total: Decimal!
+  balance: Decimal!
+  client: Client
+  patient: Patient
+  location: Location
+  lineItems: [InvoiceLineItem!]!
+  payments: [Payment!]!
+  issuedAt: DateTime
+  insertedAt: DateTime
+  updatedAt: DateTime
+}
+
+type InvoiceLineItem {
+  id: ID!
+  product: Product
+  description: String
+  quantity: Decimal!
+  unitPrice: Decimal!
+  discount: Decimal
+  tax: Decimal
+  total: Decimal!
+}
+
+type Payment {
+  id: ID!
+  amount: Decimal!
+  method: PaymentMethod!
+  reference: String
+  paidAt: DateTime!
+}
+
+type Reminder {
+  id: ID!
+  name: String!
+  status: ReminderStatus!
+  dueDate: Date
+  patient: Patient
+  client: Client
+  product: Product
+}
+
+type LabOrder {
+  id: ID!
+  status: LabOrderStatus!
+  name: String
+  orderedAt: DateTime
+  resultedAt: DateTime
+  patient: Patient
+  provider: Provider
+  results: [LabResult!]!
+}
+
+type LabResult {
+  id: ID!
+  analyte: String!
+  value: String
+  unit: String
+  referenceRange: String
+  flag: String
+}
+
+type Conversation {
+  id: ID!
+  channel: ConversationChannel!
+  subject: String
+  client: Client
+  patient: Patient
+  messages: [Message!]!
+  lastMessageAt: DateTime
+}
+
+type Message {
+  id: ID!
+  channel: ConversationChannel!
+  body: String
+  inbound: Boolean!
+  sentAt: DateTime!
+}
+
+type AnalyticsMetric {
+  name: String!
+  value: Decimal!
+  period: String
+  location: Location
+}
+
+type Event {
+  id: ID!
+  action: EventAction!
+  entityType: String!
+  entityId: ID!
+  occurredAt: DateTime!
+  actor: String
+  changes: JSON
+}
+
+# ─────────────────────────────────────────────
+# Input Types
+# ─────────────────────────────────────────────
+
+input AddressInput {
+  line1: String
+  line2: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
+input ClientInput {
+  givenName: String
+  familyName: String
+  email: String
+  phoneNumber: String
+  address: AddressInput
+  locationId: ID
+}
+
+input PatientInput {
+  name: String!
+  species: String
+  breed: String
+  sex: Sex
+  birthDate: Date
+  microchipNumber: String
+  clientId: ID!
+}
+
+input AppointmentInput {
+  start: DateTime!
+  end: DateTime
+  type: String
+  reason: String
+  patientId: ID!
+  clientId: ID
+  providerId: ID
+  locationId: ID!
+  roomId: ID
+}
+
+input EncounterInput {
+  patientId: ID!
+  providerId: ID
+  locationId: ID
+  date: DateTime
+  subjective: String
+  objective: String
+  assessment: String
+  plan: String
+}
+
+input InvoiceLineItemInput {
+  productId: ID
+  description: String
+  quantity: Decimal!
+  unitPrice: Decimal
+  discount: Decimal
+}
+
+input InvoiceInput {
+  clientId: ID!
+  patientId: ID
+  locationId: ID!
+  lineItems: [InvoiceLineItemInput!]!
+}
+
+input PaymentInput {
+  invoiceId: ID!
+  amount: Decimal!
+  method: PaymentMethod!
+  reference: String
+}
+
+input ProductInput {
+  name: String!
+  code: String
+  category: String
+  price: Decimal
+  cost: Decimal
+  taxable: Boolean
+}
+
+input MessageInput {
+  clientId: ID!
+  channel: ConversationChannel!
+  body: String!
+}
+
+input EventFilter {
+  entityType: String
+  action: EventAction
+  since: DateTime
+  locationId: ID
+}
+
+# ─────────────────────────────────────────────
+# Query Root
+# ─────────────────────────────────────────────
+
+type Query {
+  "Search and list clients (pet owners) in the Accounts domain."
+  clients(searchTerm: String, locationId: ID, limit: Int, offset: Int): [Client!]!
+  "Retrieve a single client by ID."
+  client(id: ID!): Client
+
+  "List patients (animals) in the Clinical domain."
+  patients(searchTerm: String, clientId: ID, limit: Int, offset: Int): [Patient!]!
+  "Retrieve a single patient by ID."
+  patient(id: ID!): Patient
+
+  "List appointments for a location and date range (Schedule domain)."
+  appointments(locationId: ID!, start: DateTime!, end: DateTime!, providerId: ID, status: AppointmentStatus): [Appointment!]!
+  "Retrieve a single appointment by ID."
+  appointment(id: ID!): Appointment
+  "Provider schedules for a location."
+  providerSchedules(locationId: ID!, date: Date!): [Provider!]!
+
+  "List encounters (visits) for a patient (Clinical / Treatment domains)."
+  encounters(patientId: ID!, limit: Int, offset: Int): [Encounter!]!
+  "Retrieve a single encounter by ID."
+  encounter(id: ID!): Encounter
+
+  "List invoices (Billing / New Billing domains)."
+  invoices(clientId: ID, locationId: ID, status: InvoiceStatus, limit: Int, offset: Int): [Invoice!]!
+  "Retrieve a single invoice by ID."
+  invoice(id: ID!): Invoice
+
+  "List products in the Inventory domain."
+  products(searchTerm: String, category: String, limit: Int, offset: Int): [Product!]!
+  "Retrieve a single product by ID."
+  product(id: ID!): Product
+
+  "List locations in the Hospital domain."
+  locations(organizationId: ID): [Location!]!
+  "Retrieve a single location by ID."
+  location(id: ID!): Location
+  "List providers (staff / DVMs)."
+  providers(locationId: ID): [Provider!]!
+
+  "Due and overdue reminders (Reminders domain)."
+  reminders(patientId: ID, clientId: ID, status: ReminderStatus): [Reminder!]!
+
+  "Lab orders and results (Lab domain)."
+  labOrders(patientId: ID, status: LabOrderStatus, limit: Int, offset: Int): [LabOrder!]!
+
+  "Client conversations (Conversations / Marketing domains)."
+  conversations(clientId: ID, channel: ConversationChannel, limit: Int, offset: Int): [Conversation!]!
+
+  "Aggregate practice analytics (Analytics domain)."
+  analytics(locationId: ID, metric: String, period: String): [AnalyticsMetric!]!
+
+  "Platform event log (Events domain)."
+  events(filter: EventFilter, limit: Int, offset: Int): [Event!]!
+}
+
+# ─────────────────────────────────────────────
+# Mutation Root
+# ─────────────────────────────────────────────
+
+type Mutation {
+  "Create a client (pet owner)."
+  createClient(input: ClientInput!): Client!
+  "Update an existing client."
+  updateClient(id: ID!, input: ClientInput!): Client!
+
+  "Register a patient (animal)."
+  createPatient(input: PatientInput!): Patient!
+  "Update an existing patient."
+  updatePatient(id: ID!, input: PatientInput!): Patient!
+
+  "Schedule a new appointment."
+  createAppointment(input: AppointmentInput!): Appointment!
+  "Update or reschedule an appointment."
+  updateAppointment(id: ID!, input: AppointmentInput!): Appointment!
+  "Cancel an appointment."
+  cancelAppointment(id: ID!): Appointment!
+
+  "Create a clinical encounter."
+  createEncounter(input: EncounterInput!): Encounter!
+  "Update or amend an encounter."
+  updateEncounter(id: ID!, input: EncounterInput!): Encounter!
+
+  "Create an invoice."
+  createInvoice(input: InvoiceInput!): Invoice!
+  "Record a payment against an invoice."
+  createPayment(input: PaymentInput!): Payment!
+
+  "Create a product in inventory."
+  createProduct(input: ProductInput!): Product!
+  "Update a product."
+  updateProduct(id: ID!, input: ProductInput!): Product!
+
+  "Send a message to a client."
+  sendMessage(input: MessageInput!): Message!
+}

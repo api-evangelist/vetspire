@@ -1,0 +1,123 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Vetspire
+providerId: vetspire
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Veterinary
+- Practice Management
+- PIMS
+- GraphQL
+- Plans
+description: >-
+  Vetspire is sold as a per-practice SaaS subscription priced per full-time
+  veterinarian (DVM) per month, not by API call. The GraphQL API is included
+  with a Vetspire subscription and is not separately metered or billed; access
+  is via an administrator-provisioned API token. Published tiers are Standard and
+  Pro (per vet / month), with volume discounts for larger multi-location groups
+  and a custom Enterprise arrangement. One-time data-migration packages
+  (low-touch to high-touch) are quoted separately.
+notes: >-
+  Prices below are as reported by third-party software directories and the
+  Vetspire pricing page; Vetspire publishes "contact sales" style pricing and
+  exact figures change - verify with Vetspire sales at reconciliation. The API
+  itself carries no usage-based price.
+sources:
+- https://vetspire.com/pricing
+- https://www.vetsoftwarehub.com/product/vetspire/pricing
+- https://www.capterra.com/p/187469/Vetspire/
+plans:
+- id: vetspire-standard
+  name: Standard
+  type: subscription
+  description: >-
+    Core cloud veterinary practice management (EMR, scheduling, billing,
+    inventory, reminders) with GraphQL API access, priced per full-time
+    veterinarian per month.
+  entries:
+  - label: Standard per DVM
+    name: standard_per_dvm
+    type: recurring
+    metric: veterinarian
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$299 per DVM / month
+    userMultiplied: true
+  elements:
+  - name: Electronic Medical Records
+  - name: Scheduling
+  - name: Billing & Invoicing
+  - name: Inventory
+  - name: Reminders
+  - name: GraphQL API Access
+- id: vetspire-pro
+  name: Pro
+  type: subscription
+  description: >-
+    Standard plus advanced/AI features, priced per full-time veterinarian per
+    month.
+  entries:
+  - label: Pro per DVM
+    name: pro_per_dvm
+    type: recurring
+    metric: veterinarian
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$379 per DVM / month
+    userMultiplied: true
+  elements:
+  - name: All Standard Features
+  - name: Advanced / AI Features
+  - name: GraphQL API Access
+- id: vetspire-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Volume-discounted pricing for large multi-location groups (e.g. 50+
+    locations, roughly $249-$329 per DVM / month) with negotiated terms and
+    dedicated onboarding. Contact Vetspire sales.
+  entries:
+  - label: Enterprise per DVM
+    name: enterprise_per_dvm
+    type: recurring
+    metric: veterinarian
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$249-$329 per DVM / month (volume)
+    userMultiplied: true
+  elements:
+  - name: Volume Discounts
+  - name: Multi-Location Management
+  - name: Dedicated Onboarding
+  - name: GraphQL API Access
+- id: vetspire-data-migration
+  name: Data Migration
+  type: onetime
+  description: >-
+    One-time data-migration packages ranging from low-touch to high-touch,
+    billed as a separate onboarding fee.
+  entries:
+  - label: Data Migration Package
+    name: data_migration
+    type: flat
+    metric: package
+    limit: -1
+    timeFrame: onetime
+    geo: global
+    unit: 1
+    price: quoted per package (low to high touch)
+    userMultiplied: false
+  elements:
+  - name: Historical Data Import
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
