@@ -272,6 +272,8 @@ apis:
     events (record created, updated, deleted, and workflow triggers) for auditing,
     synchronization, and integration polling.
 common:
+- type: DomainSecurity
+  url: security/vetspire-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/vetspire
 - type: LinkedIn
