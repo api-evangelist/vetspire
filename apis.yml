@@ -40,6 +40,11 @@ apis:
   name: Vetspire Accounts & Clients API
   tags:
   - Clients
+  - Account
+  - Owners
+  - GraphQL
+  tags_raw:
+  - Clients
   - Accounts
   - Owners
   - GraphQL
@@ -145,6 +150,11 @@ apis:
   name: Vetspire Inventory & Products API
   tags:
   - Inventory
+  - Product
+  - Catalog
+  - GraphQL
+  tags_raw:
+  - Inventory
   - Products
   - Catalog
   - GraphQL
@@ -164,6 +174,11 @@ apis:
 - aid: vetspire:vetspire-hospital-locations-api
   name: Vetspire Hospital & Locations API
   tags:
+  - Locations
+  - Hospital
+  - Organization
+  - GraphQL
+  tags_raw:
   - Locations
   - Hospital
   - Organizations
@@ -264,6 +279,11 @@ apis:
 - aid: vetspire:vetspire-events-api
   name: Vetspire Events API
   tags:
+  - Event
+  - Audit
+  - Changelog
+  - GraphQL
+  tags_raw:
   - Events
   - Audit
   - Change Log
