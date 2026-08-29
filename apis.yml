@@ -11,6 +11,17 @@ description: Vetspire is a cloud-based, AI-enabled veterinary practice managemen
   Schedule, Billing, Inventory, Hospital, Lab, Reminders, Conversations, Analytics,
   Events). The schema exposes 400+ object types, 248 input objects, and 112 enums,
   with a maximum query depth of 8.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: unknown
