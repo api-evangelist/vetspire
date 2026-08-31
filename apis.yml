@@ -292,7 +292,7 @@ apis:
   tags:
   - Event
   - Audit
-  - Changelog
+  - Change Log
   - GraphQL
   tags_raw:
   - Events
