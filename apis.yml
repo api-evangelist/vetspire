@@ -185,8 +185,8 @@ apis:
 - aid: vetspire:vetspire-hospital-locations-api
   name: Vetspire Hospital & Locations API
   tags:
-  - Locations
-  - Hospital
+  - Location
+  - Hospitals
   - Organization
   - GraphQL
   tags_raw:
