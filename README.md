@@ -1,4 +1,4 @@
-# Vetspire (vetspire)
+# Vetspire
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,74 +64,128 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Vetspire is a cloud-based, AI-enabled veterinary practice management (PIMS) platform for animal hospitals and clinics, covering electronic medical records, scheduling, client communications, billing, inventory, labs, and reminders. Vetspire exposes a single public **GraphQL API** at `https://api.vetspire.com/graphql` - every action in the product is powered by GraphQL - authenticated with an `Authorization` API token and organized by veterinary practice domains. The schema exposes 400+ object types, 248 input objects, and 112 enums, with a maximum query depth of 8.
+Vetspire is a cloud-based, AI-enabled veterinary practice management (PIMS) platform for animal hospitals and clinics, covering electronic medical records, scheduling, client communications, billing, inventory, labs, and reminders. Vetspire exposes a single public GraphQL API at https://api.vetspire.com/graphql - every action in the product is powered by GraphQL - authenticated with an Authorization API token and organized by veterinary practice domains (Accounts, Clinical, Schedule, Billing, Inventory, Hospital, Lab, Reminders, Conversations, Analytics, Events). The schema exposes 400+ object types, 248 input objects, and 112 enums, with a maximum query depth of 8.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/vetspire/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/vetspire/refs/heads/main/apis.yml)
+**Areas:** Veterinary · Practice Management · PIMS · Healthcare · GraphQL · Electronic Health Records · Scheduling
 
-## Tags
+## Vetspire on APIs.io
 
-- Veterinary
-- Practice Management
-- PIMS
-- Healthcare
-- GraphQL
-- Electronic Medical Records
-- Scheduling
+Everything profiled for Vetspire is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/vetspire/](https://apis.io/providers/vetspire/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (12)
 
-- **Created:** 2026-07-04
-- **Modified:** 2026-07-04
+- [Vetspire Accounts & Clients API](https://apis.io/apis/vetspire/vetspire-accounts-clients-api/) — GraphQL operations over the Accounts domain - search and read client (pet owner) records including contact details, addresses, balances, linked patients,…
+- [Vetspire Patients API](https://apis.io/apis/vetspire/vetspire-patients-api/) — GraphQL operations over the Clinical domain patient records - species, breed, sex, weight history, microchip, alerts, and the owning client - plus mutations…
+- [Vetspire Schedule & Appointments API](https://apis.io/apis/vetspire/vetspire-schedule-appointments-api/) — GraphQL operations over the Schedule domain - list appointments for a location and date range, read provider schedules by location, and create, reschedule,…
+- [Vetspire Encounters & Clinical Records API](https://apis.io/apis/vetspire/vetspire-encounters-clinical-api/) — GraphQL operations over the Clinical and Treatment domains - encounters (visits/SOAP notes), treatment sheets, immunizations, prescriptions, and clinical…
+- [Vetspire Billing & Invoices API](https://apis.io/apis/vetspire/vetspire-billing-invoices-api/) — GraphQL operations over the Billing and New Billing domains - invoices, line items, orders, payments, and accounts-receivable balances, with mutations to…
+- [Vetspire Inventory & Products API](https://apis.io/apis/vetspire/vetspire-inventory-products-api/) — GraphQL operations over the Inventory domain - products and the product catalog, pricing, stock levels, stock transfers, and vendors, with mutations to…
+- [Vetspire Hospital & Locations API](https://apis.io/apis/vetspire/vetspire-hospital-locations-api/) — GraphQL operations over the Hospital domain - organization and location records, providers (staff/DVMs), rooms, and operating hours used to scope…
+- [Vetspire Lab & Diagnostics API](https://apis.io/apis/vetspire/vetspire-lab-diagnostics-api/) — GraphQL operations over the Lab domain - diagnostic lab orders and results linked to encounters and patients, including reference ranges and result status,…
+- [Vetspire Reminders API](https://apis.io/apis/vetspire/vetspire-reminders-api/) — GraphQL operations over the Reminders domain - due and overdue service reminders (vaccinations, wellness, recalls) per patient and client, used to drive…
+- [Vetspire Conversations & Communications API](https://apis.io/apis/vetspire/vetspire-conversations-api/) — GraphQL operations over the Conversations and Marketing domains - client messaging threads (SMS/email), templates, and campaigns, with mutations to send…
+- [Vetspire Analytics & Reporting API](https://apis.io/apis/vetspire/vetspire-analytics-api/) — GraphQL operations over the Analytics domain - aggregate practice metrics and reporting datasets (production, revenue, appointments, compliance) used for…
+- [Vetspire Events API](https://apis.io/apis/vetspire/vetspire-events-api/) — GraphQL operations over the Events domain - a queryable log of platform events (record created, updated, deleted, and workflow triggers) for auditing,…
 
-## API
+### Published properties
 
-Vetspire's public API is a single GraphQL endpoint. The catalog below lists the logical APIs as GraphQL operation groups by domain. All share the base URL `https://api.vetspire.com/graphql` and require an `Authorization` API token.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-| API | Domain | Description |
-| --- | --- | --- |
-| Accounts & Clients API | Accounts | Search/read/create clients (pet owners), balances, linked patients. |
-| Patients API | Clinical | Patient (animal) records - species, breed, weight, microchip, alerts. |
-| Schedule & Appointments API | Schedule | Appointments for a location/date range, provider schedules. |
-| Encounters & Clinical Records API | Clinical / Treatment | Encounters (SOAP notes), treatment sheets, immunizations, prescriptions. |
-| Billing & Invoices API | Billing / New Billing | Invoices, line items, orders, payments, AR balances. |
-| Inventory & Products API | Inventory | Products, catalog, pricing, stock levels, transfers. |
-| Hospital & Locations API | Hospital | Organizations, locations, providers, rooms. |
-| Lab & Diagnostics API | Lab | Diagnostic lab orders and results. |
-| Reminders API | Reminders | Due/overdue service reminders and recalls. |
-| Conversations & Communications API | Conversations / Marketing | Client messaging threads, templates, campaigns. |
-| Analytics & Reporting API | Analytics | Aggregate practice metrics and reporting datasets. |
-| Events API | Events | Queryable log of platform events for auditing and sync. |
+#### GraphQL (1)
 
-## GraphQL
+GraphQL schemas.
 
-- [GraphQL Overview](graphql/vetspire-graphql.md)
-- [GraphQL Schema (modeled SDL)](graphql/vetspire-schema.graphql)
+- [Vetspire GraphQL API](https://apis.io/graphqls/vetspire/vetspire-graphql/)
 
-Production endpoint `https://api.vetspire.com/graphql`; staging `https://api.staging.vetspire.com/graphql`; sandbox `https://api.sandbox.vetspire.com/graphql`. Authenticate with an API token in the `Authorization` header. Maximum query depth is 8.
+#### Collections (1)
 
-> The schema SDL in this repository is a **representative, modeled** surface grounded in the documented domains at [developer.vetspire.com](https://developer.vetspire.com/). The full production schema is only introspectable with a valid API token; confirm exact field names against the developer reference and live introspection.
+Postman and Open Collection request collections.
 
-## Collections
+- [Vetspire GraphQL API](https://apis.io/collections/vetspire/open-vetspire/)
 
-- [Postman Collection](collections/vetspire.postman_collection.json)
-- [Open Collection](collections/vetspire.opencollection.json)
+#### Security (1)
 
-## Common Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [GitHub Organization](https://github.com/vetspire)
-- [LinkedIn](https://www.linkedin.com/company/vetspire)
+- [Vetspire Domain Security](https://apis.io/security/vetspire/vetspire-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Vetspire Plans Pricing](https://apis.io/plans/vetspire/vetspire-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Vetspire Rate Limits](https://apis.io/rate-limits/vetspire/vetspire-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Vetspire Finops](https://apis.io/finops/vetspire/vetspire-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://vetspire.com/)
 - [Documentation](https://developer.vetspire.com/)
-- [Plans](plans/vetspire-plans-pricing.yml)
-- [Rate Limits](rate-limits/vetspire-rate-limits.yml)
-- [Fin Ops](finops/vetspire-finops.yml)
 - [Support](https://support.vetspire.com/support/solutions/folders/70000486207)
+- [Blog](https://www.vetspire.ai/blog)
+- [GitHub](https://github.com/vetspire)
 
-## Pricing
+## API Evangelist rating
 
-Vetspire is a per-practice SaaS billed per full-time veterinarian (DVM) per month (Standard ~$299, Pro ~$379; Enterprise volume pricing ~$249-$329 for large multi-location groups). The GraphQL API is included with a subscription and is **not** separately metered or billed. See [Plans](plans/vetspire-plans-pricing.yml).
+**Kin Score 22.2** — emerging · rubric 0.24.0 · scored 2026-10-17
 
-## Maintainers
+| Facet | Score |
+|---|---|
+| Discoverability | 71.4 |
+| Contract quality | 35.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 7.9 |
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Agent readiness 13.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 4.7** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/vetspire/](https://apis.io/providers/vetspire/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Vetspire: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/vetspire/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
